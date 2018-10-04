@@ -1,0 +1,17 @@
+language: java
+
+# Seems Travis CI no longer supports openjdk6 or oraclejdk7
+# https://github.com/travis-ci/travis-ci/issues/7884#issuecomment-308451879
+
+jdk:
+  - openjdk7
+  - oraclejdk8
+#  - oraclejdk9
+
+install: mvn install -DskipTests=true -Dgpg.skip=true
+
+script:
+  - mvn clean verify -Dgpg.skip=true
+
+after_success:
+  - mvn -Pcoverage clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:report
